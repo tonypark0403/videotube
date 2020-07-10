@@ -4,9 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "dev": "nodemon .",
+    "start": "babel-node ./src",
+    "dev": "nodemon --exec babel-node ./src",
+    "lint": "eslint ./src/**/*.{ts,tsx,js,jsx}",
+    "prettier": "prettier --write --config ./.prettierrc ./src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/**/*.js": [
+      "yarn prettier",
+      "yarn lint"
+    ]
   },
   "repository": {
     "type": "git",
@@ -20,9 +33,20 @@
   "homepage": "https://github.com/tonypark0403/videotube#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "@babel/core": "^7.10.4",
+    "@babel/node": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5"
   }
 }
