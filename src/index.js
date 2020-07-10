@@ -1,20 +1,19 @@
-require('dotenv').config();
-const express = require('express');
+import dotenv from 'dotenv';
+import express from 'express';
+
+dotenv.config();
 
 const app = express();
+
 const { PORT } = process.env;
 
-function handleListening() {
+const handleListening = () => {
   console.log(`Listening on: http://localhost:${PORT}`);
-}
+};
 
-function handleHome(req, res) {
-  res.send('Hello from home');
-}
+const handleHome = (req, res) => res.send('Hello from my home');
 
-function handleProfile(req, res) {
-  res.send('You are on my profile');
-}
+const handleProfile = (req, res) => res.send('You are on my profile');
 
 app.get('/', handleHome);
 
