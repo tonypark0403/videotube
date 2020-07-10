@@ -6,7 +6,9 @@
   "scripts": {
     "start": "babel-node ./src",
     "dev": "nodemon --exec babel-node ./src",
-    "lint": "eslint ./src/**/*.{ts,tsx,js,jsx}",
+    "install": "yarn && yarn --cwd frontend",
+    "start:dev": "concurrently \"yarn dev\" \"yarn --cwd frontend start\"",
+    "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write --config ./.prettierrc ./src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,6 +35,7 @@
   "homepage": "https://github.com/tonypark0403/videotube#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^5.2.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "eslint-plugin-import": "^2.22.0",
