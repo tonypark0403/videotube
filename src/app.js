@@ -7,6 +7,7 @@ import apiGlobalRouter from './routes/api/globalRouter';
 import apiUserRouter from './routes/api/userRouter';
 import apiVideoRouter from './routes/api/videoRouter';
 import routes from './routes';
+import globalErrorHandler from './shared/globalErrorHandler';
 
 const app = express();
 
@@ -23,5 +24,8 @@ app.use(routes.videos, videoRouter);
 app.use(`${routes.api}${routes.home}`, apiGlobalRouter);
 app.use(`${routes.api}${routes.users}`, apiUserRouter);
 app.use(`${routes.api}${routes.videos}`, apiVideoRouter);
+
+// error - for API
+app.use(globalErrorHandler);
 
 export default app;

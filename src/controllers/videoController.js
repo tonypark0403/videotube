@@ -1,4 +1,10 @@
-export const home = (req, res) => res.render('home', { pageTitle: 'Home', potato: 1245 });
+import * as videoService from '../services/videoService';
+import tryCatch from '../shared/tryCatch';
+
+export const home = tryCatch(async (req, res) => {
+  const videos = await videoService.getVideos();
+  res.render('home', { pageTitle: 'Home', videos });
+});
 export const search = (req, res) => {
   const { term: searchingBy } = req.query;
   res.render('search', { pageTitle: 'Search', searchingBy });
