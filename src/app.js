@@ -15,6 +15,7 @@ const app = express();
 // middlewares
 app.set('views', 'src/views');
 app.set('view engine', 'pug');
+app.use('/uploads', express.static('uploads/'));
 middlewares(app);
 
 app.use(routes.home, globalRouter);
