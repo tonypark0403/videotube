@@ -6,6 +6,8 @@
   "scripts": {
     "start": "babel-node ./src",
     "dev": "nodemon --exec babel-node ./src",
+    "dev:assets": "webpack --mode development -w",
+    "build:assets": "webpack --mode production",
     "start:dev": "concurrently \"yarn dev\" \"yarn --cwd frontend start\"",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write --config ./.prettierrc ./src/**/*.js",
@@ -37,7 +39,6 @@
     "concurrently": "^5.2.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
-    "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "mongoose": "^5.9.23",
@@ -49,13 +50,21 @@
     "@babel/core": "^7.10.4",
     "@babel/node": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "css-loader": "^3.6.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
     "eslint": "^7.4.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-import": "^2.22.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
+    "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "sass-loader": "^9.0.2",
+    "style-loader": "^1.2.1"
   }
 }

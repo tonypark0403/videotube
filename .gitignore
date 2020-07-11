@@ -27,3 +27,4 @@ yarn-error.log*
 # Backend
 .env
 uploads
+static
