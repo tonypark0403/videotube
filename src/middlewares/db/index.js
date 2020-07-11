@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-mongoose.connect(
-  'mongodb+srv://test:test@individual-d5ojj.mongodb.net/youtube?retryWrites=true&w=majority',
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  },
-);
+dotenv.config();
+
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 
