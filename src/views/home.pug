@@ -2,5 +2,7 @@ extends layouts/main
 
 block content
     .videos
-        h1 Video
-        //-p#{potato} is for text but potato is like obj {potato: 1245}
+        each item in videos
+            h1= item.title
+            p= item.description
+            //-p#{potato} is for text but potato is like obj {potato: 1245}
