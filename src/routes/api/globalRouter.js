@@ -5,10 +5,11 @@ import * as userController from '../../controllers/api/userController';
 
 const globalRouter = express.Router();
 
+globalRouter.get(routes.join, userController.getJoin);
+globalRouter.post(routes.join, userController.postJoin);
 globalRouter.get(routes.home, videoController.home);
-globalRouter.get(routes.join, videoController.search);
-globalRouter.get(routes.login, userController.join);
 globalRouter.get(routes.logout, userController.login);
 globalRouter.get(routes.search, userController.logout);
+globalRouter.get(routes.join, videoController.search);
 
 export default globalRouter;
