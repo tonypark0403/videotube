@@ -24,3 +24,7 @@ export const saveVideo = async (video, file) => {
     throw new AppError(404, 'Not found');
   }
 };
+
+export const findVideoById = _id => {
+  return Video.findById(_id);
+};
