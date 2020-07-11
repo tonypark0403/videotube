@@ -11,6 +11,7 @@ import routes from './routes';
 const app = express();
 
 // middlewares
+app.set('views', 'src/views');
 app.set('view engine', 'pug');
 middlewares(app);
 
