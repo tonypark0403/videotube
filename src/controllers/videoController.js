@@ -3,8 +3,12 @@ import tryCatch from '../shared/tryCatch';
 import routes from '../routes';
 
 export const home = tryCatch(async (req, res) => {
-  const videos = await videoService.getVideos();
-  res.render('home', { pageTitle: 'Home', videos });
+  try {
+    const videos = await videoService.getVideos();
+    res.render('home', { pageTitle: 'Home', videos });
+  } catch {
+    res.render('home', { pageTitle: 'Home', videos: [] });
+  }
 });
 export const search = tryCatch(async (req, res) => {
   const { term: searchingBy } = req.query;

@@ -1,15 +1,14 @@
 /* eslint-disable import/prefer-default-export */
-import { videos } from '../models/db';
 import AppError from '../shared/AppError';
+import Video from '../models/video';
 
-export const getVideos = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      resolve(videos);
-    } catch (err) {
-      reject(new AppError(403, 'Not found!'));
-    }
-  });
+export const getVideos = async () => {
+  try {
+    return await Video.find({});
+  } catch (err) {
+    console.log(err);
+    throw new AppError(403, 'Not found!');
+  }
 };
 
 export const saveVideo = video => {
