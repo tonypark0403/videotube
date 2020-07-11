@@ -1,11 +1,12 @@
-// eslint-disable-next-line import/prefer-default-export
+/* eslint-disable import/prefer-default-export */
 export const videos = [
   {
     id: 324393,
     title: 'Video awesome',
     description: 'This is something I love',
     views: 24,
-    videoFile: 'https://archive.org/details/BigBuckBunny_124',
+    videoFile:
+      'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
     creator: {
       id: 121212,
       name: 'test',
@@ -17,10 +18,11 @@ export const videos = [
     title: 'Video super',
     description: 'This is something I love',
     views: 24,
-    videoFile: 'https://archive.org/details/BigBuckBunny_124',
+    videoFile:
+      'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
     creator: {
       id: 121212,
-      name: 'tes',
+      name: 'test',
       email: 'test@test.com',
     },
   },
@@ -29,7 +31,8 @@ export const videos = [
     title: 'Video nice',
     description: 'This is something I love',
     views: 24,
-    videoFile: 'https://archive.org/details/BigBuckBunny_124',
+    videoFile:
+      'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
     creator: {
       id: 121212,
       name: 'test',
@@ -41,7 +44,8 @@ export const videos = [
     title: 'Video perfect',
     description: 'This is something I love',
     views: 24,
-    videoFile: 'https://archive.org/details/BigBuckBunny_124',
+    videoFile:
+      'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
     creator: {
       id: 121212,
       name: 'test',
