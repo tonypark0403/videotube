@@ -14,7 +14,7 @@ export const home = async (req, res) => {
 
 export const search = tryCatch(async (req, res) => {
   const { term: searchingBy } = req.query;
-  const videos = await videoService.getVideos();
+  const videos = await videoService.getVideoByTerm(searchingBy);
   res.render('search', { pageTitle: 'Search', searchingBy, videos });
 });
 

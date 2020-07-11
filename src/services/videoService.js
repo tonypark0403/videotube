@@ -4,7 +4,16 @@ import Video from '../models/video';
 
 export const getVideos = async () => {
   try {
-    return await Video.find({});
+    return await Video.find({}).sort({ _id: -1 });
+  } catch (err) {
+    console.log(err);
+    throw new AppError(403, 'Not found!');
+  }
+};
+
+export const getVideoByTerm = async searchingBy => {
+  try {
+    return await Video.find({ title: { $regex: searchingBy, $options: 'i' } });
   } catch (err) {
     console.log(err);
     throw new AppError(403, 'Not found!');
