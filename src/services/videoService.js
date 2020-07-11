@@ -32,3 +32,7 @@ export const findVideoById = _id => {
 export const editVideoById = (_id, { title, description }) => {
   return Video.findOneAndUpdate({ _id }, { title, description });
 };
+
+export const removeVideoById = async _id => {
+  await Video.findOneAndRemove({ _id });
+};

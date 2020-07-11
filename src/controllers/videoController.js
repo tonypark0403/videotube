@@ -29,7 +29,7 @@ export const postUpload = tryCatch(async (req, res) => {
 export const videoDetail = async (req, res) => {
   try {
     const video = await videoService.findVideoById(req.params.id);
-    res.render('videoDetail', { pageTitle: 'Video Detail', video });
+    res.render('videoDetail', { pageTitle: video.title, video });
   } catch (error) {
     console.log(error);
     res.redirect(routes.home);
@@ -53,6 +53,13 @@ export const postEditVideo = async (req, res) => {
   } catch (error) {
     res.redirect(routes.home);
   }
-}; // mongo db id는 _id
+};
 
-export const deleteVideo = (req, res) => res.render('deleteVideo', { pageTitle: 'Delete Video' });
+export const deleteVideo = async (req, res) => {
+  try {
+    await videoService.removeVideoById(req.params.id);
+  } catch (error) {
+    console.log(`The video of ${req.params.id} does't exist.`);
+  }
+  res.redirect(routes.home); // 실패하던 성공하던 redirect to home
+};
