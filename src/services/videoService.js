@@ -28,3 +28,7 @@ export const saveVideo = async (video, file) => {
 export const findVideoById = _id => {
   return Video.findById(_id);
 };
+
+export const editVideoById = (_id, { title, description }) => {
+  return Video.findOneAndUpdate({ _id }, { title, description });
+};

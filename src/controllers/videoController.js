@@ -11,11 +11,13 @@ export const home = async (req, res) => {
     res.render('home', { pageTitle: 'Home', videos: [] });
   }
 };
+
 export const search = tryCatch(async (req, res) => {
   const { term: searchingBy } = req.query;
   const videos = await videoService.getVideos();
   res.render('search', { pageTitle: 'Search', searchingBy, videos });
 });
+
 export const getUpload = (req, res) => res.render('upload', { pageTitle: 'Upload' });
 
 export const postUpload = tryCatch(async (req, res) => {
@@ -23,6 +25,7 @@ export const postUpload = tryCatch(async (req, res) => {
   // To Do: Upload and save video
   res.redirect(routes.videoDetail(video._id));
 });
+
 export const videoDetail = async (req, res) => {
   try {
     const video = await videoService.findVideoById(req.params.id);
@@ -32,5 +35,24 @@ export const videoDetail = async (req, res) => {
     res.redirect(routes.home);
   }
 };
-export const editVideo = (req, res) => res.render('editVideo', { pageTitle: 'Edit Video' });
+
+export const getEditVideo = async (req, res) => {
+  try {
+    const video = await videoService.findVideoById(req.params.id);
+    res.render('editVideo', { pageTitle: `Edit ${video.title}`, video });
+  } catch (error) {
+    console.log("The id doesn't exit");
+    res.redirect(routes.home);
+  }
+};
+
+export const postEditVideo = async (req, res) => {
+  try {
+    const video = await videoService.editVideoById(req.params.id, req.body);
+    res.redirect(routes.videoDetail(video._id));
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+}; // mongo db id는 _id
+
 export const deleteVideo = (req, res) => res.render('deleteVideo', { pageTitle: 'Delete Video' });
