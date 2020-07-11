@@ -9,6 +9,7 @@ import apiVideoRouter from './routes/api/videoRouter';
 import globalErrorHandler from './shared/globalErrorHandler';
 import routes from './routes';
 import './middlewares/db';
+import './middlewares/passport';
 
 const app = express();
 

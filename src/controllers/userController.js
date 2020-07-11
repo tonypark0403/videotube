@@ -1,18 +1,28 @@
+import passport from 'passport';
 import * as userService from '../services/userService';
-import tryCatch from '../shared/tryCatch';
 import routes from '../routes';
 
 export const getJoin = (req, res) => {
   res.render('join', { pageTitle: 'Join' });
 };
-export const postJoin = tryCatch(async (req, res) => {
-  await userService.processSignUp(req.body);
-  res.redirect(routes.home);
-});
-export const getLogin = (req, res) => res.render('login', { pageTitle: 'Log In' });
-export const postLogin = (req, res) => {
-  res.redirect(routes.home);
+export const postJoin = async (req, res, next) => {
+  try {
+    const user = await userService.processSignUp(req.body);
+    if (!user) {
+      res.status(400);
+      res.render('join', { pageTitle: 'Join' });
+    } else {
+      next();
+    }
+  } catch (err) {
+    res.redirect(routes.home);
+  }
 };
+export const getLogin = (req, res) => res.render('login', { pageTitle: 'Log In' });
+export const postLogin = passport.authenticate('local', {
+  failureRedirect: routes.login,
+  successRedirect: routes.home,
+});
 export const logout = (req, res) => {
   // To Do: Process Log Out
   res.redirect(routes.home);
