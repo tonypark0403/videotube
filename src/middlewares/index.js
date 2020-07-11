@@ -6,6 +6,7 @@ import passport from 'passport';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import mongoStore from 'connect-mongo';
+import flash from 'connect-flash';
 import { localsMiddleware } from './localsMiddleware';
 
 const CookieStore = mongoStore(session);
@@ -26,5 +27,6 @@ export default app => {
   );
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(flash());
   app.use(localsMiddleware);
 };

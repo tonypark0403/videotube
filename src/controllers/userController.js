@@ -22,9 +22,12 @@ export const getLogin = (req, res) => res.render('login', { pageTitle: 'Log In' 
 export const postLogin = passport.authenticate('local', {
   failureRedirect: routes.login,
   successRedirect: routes.home,
+  successFlash: 'Welcome',
+  failureFlash: "Can't log in. Check email and/or password",
 });
 export const logout = (req, res) => {
-  // To Do: Process Log Out
+  req.flash('info', 'Logged out, see you later');
+  req.logout();
   res.redirect(routes.home);
 };
 export const userDetail = (req, res) => res.render('userDetail', { pageTitle: 'User Detail' });
