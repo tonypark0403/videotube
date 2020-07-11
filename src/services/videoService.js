@@ -11,14 +11,16 @@ export const getVideos = async () => {
   }
 };
 
-export const saveVideo = video => {
-  const { file, title, description } = video;
-  console.log(file, title, description);
-  return new Promise((resolve, reject) => {
-    try {
-      resolve(324393);
-    } catch (err) {
-      reject(new AppError(404, 'Not found'));
-    }
-  });
+export const saveVideo = async (video, file) => {
+  const { title, description } = video;
+  const { path } = file;
+  try {
+    return await Video.create({
+      fileUrl: path,
+      title,
+      description,
+    });
+  } catch (err) {
+    throw new AppError(404, 'Not found');
+  }
 };
