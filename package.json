@@ -6,7 +6,6 @@
   "scripts": {
     "start": "babel-node ./src",
     "dev": "nodemon --exec babel-node ./src",
-    "install": "yarn && yarn --cwd frontend",
     "start:dev": "concurrently \"yarn dev\" \"yarn --cwd frontend start\"",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write --config ./.prettierrc ./src/**/*.js",
@@ -41,7 +40,8 @@
     "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pug": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
