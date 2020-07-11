@@ -6,8 +6,9 @@ import videoRouter from './routes/videoRouter';
 import apiGlobalRouter from './routes/api/globalRouter';
 import apiUserRouter from './routes/api/userRouter';
 import apiVideoRouter from './routes/api/videoRouter';
-import routes from './routes';
 import globalErrorHandler from './shared/globalErrorHandler';
+import routes from './routes';
+import './middlewares/db';
 
 const app = express();
 
