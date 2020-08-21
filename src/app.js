@@ -3,9 +3,6 @@ import middlewares from './middlewares';
 import globalRouter from './routes/globalRouter';
 import userRouter from './routes/userRouter';
 import videoRouter from './routes/videoRouter';
-import apiGlobalRouter from './routes/api/globalRouter';
-import apiUserRouter from './routes/api/userRouter';
-import apiVideoRouter from './routes/api/videoRouter';
 import globalErrorHandler from './shared/globalErrorHandler';
 import routes from './routes';
 import './middlewares/db';
@@ -24,11 +21,6 @@ middlewares(app);
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
 app.use(routes.videos, videoRouter);
-
-// api
-app.use(`${routes.api}${routes.home}`, apiGlobalRouter);
-app.use(`${routes.api}${routes.users}`, apiUserRouter);
-app.use(`${routes.api}${routes.videos}`, apiVideoRouter);
 
 // error - for API
 app.use(globalErrorHandler);
