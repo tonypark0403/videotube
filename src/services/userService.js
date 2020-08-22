@@ -27,3 +27,5 @@ export const getUser = email => {
 };
 
 export const getUserById = id => User.findById(id);
+
+export const getUpdateUserById = (id, user) => User.findByIdAndUpdate(id, user);
