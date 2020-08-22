@@ -7,7 +7,8 @@ const userRouter = express.Router();
 
 userRouter.get(routes.editProfile, onlyPrivate, userController.getEditProfile);
 userRouter.post(routes.editProfile, onlyPrivate, uploadAvatar, userController.postEditProfile);
-userRouter.get(routes.changePassword, onlyPrivate, userController.changePassword);
+userRouter.get(routes.changePassword, onlyPrivate, userController.getChangePassword);
+userRouter.post(routes.changePassword, onlyPrivate, userController.postChangePassword);
 userRouter.get(routes.userDetail(), userController.userDetail);
 
 export default userRouter;
