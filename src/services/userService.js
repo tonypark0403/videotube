@@ -17,3 +17,11 @@ export const processSignUp = async ({ name, email, password, password2 }) => {
   }
   return null;
 };
+
+export const createUser = user => {
+  return User.create(user);
+};
+
+export const getUser = email => {
+  return User.findOne({ email });
+};
