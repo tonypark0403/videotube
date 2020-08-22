@@ -25,4 +25,6 @@ globalRouter.get(
   userController.postGithubLogIn,
 );
 
+globalRouter.get(routes.me, userController.getMe);
+
 export default globalRouter;
