@@ -25,6 +25,22 @@ globalRouter.get(
   userController.postGithubLogIn,
 );
 
+globalRouter.get(routes.facebook, onlyPublic, userController.facebookLogin);
+globalRouter.get(
+  routes.facebookCallback,
+  onlyPublic,
+  passport.authenticate('facebook', { failureRedirect: routes.login }),
+  userController.postFacebookLogIn,
+);
+
+globalRouter.get(routes.instagram, onlyPublic, userController.instagramLogin);
+globalRouter.get(
+  routes.instagramCallback,
+  onlyPublic,
+  passport.authenticate('instagram', { failureRedirect: routes.login }),
+  userController.postInstagramLogIn,
+);
+
 globalRouter.get(routes.me, userController.getMe);
 
 export default globalRouter;

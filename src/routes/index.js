@@ -27,6 +27,16 @@ const DELETE_VIDEO = '/:id/delete';
 const GITHUB = '/auth/github';
 const GITHUB_CALLBACK = '/auth/github/callback';
 
+// Facebook
+
+const FB = '/auth/facebook';
+const FB_CALLBACK = '/auth/facebook/callback';
+
+// Instagram
+
+const INSTA = '/auth/instagram';
+const INSTA_CALLBACK = '/auth/instagram/callback';
+
 const routes = {
   home: HOME,
   join: JOIN,
@@ -66,6 +76,10 @@ const routes = {
   },
   github: GITHUB,
   githubCallback: GITHUB_CALLBACK,
+  facebook: FB,
+  facebookCallback: FB_CALLBACK,
+  instagram: INSTA,
+  instagramCallback: INSTA_CALLBACK,
 };
 
 export default routes;

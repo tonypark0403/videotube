@@ -25,3 +25,5 @@ export const createUser = user => {
 export const getUser = email => {
   return User.findOne({ email });
 };
+
+export const getUserById = id => User.findById(id);

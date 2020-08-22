@@ -64,6 +64,88 @@ export const postGithubLogIn = (req, res) => {
   res.redirect(routes.home);
 };
 
+export const facebookLogin = passport.authenticate('facebook');
+
+export const facebookLoginCallback = async (_, __, profile, cb) => {
+  // accessToken, refreshToken is not used so use _ and __
+  // console.log(accessToken, refreshToken, profile, cb);
+  console.log(profile);
+  const {
+    _json: { id, name, email },
+  } = profile;
+  // const { value: avatarUrl } = profile.photos[0];
+  const avatarUrl = `https://graph.facebook.com/${id}/picture?type=large`;
+  try {
+    let modifiedEmail = email;
+    if (!modifiedEmail) {
+      modifiedEmail = `${name}@test.com`;
+    }
+    const user = await userService.getUser(modifiedEmail);
+    if (user) {
+      // the email is already saved or used as our account
+      user.facebookId = id;
+      user.avatarUrl = avatarUrl;
+      user.save();
+      return cb(null, user);
+    }
+    // facebook user is not saved in db yet
+    const newUser = await userService.createUser({
+      email: modifiedEmail,
+      name,
+      facebookId: id,
+      avatarUrl,
+    });
+    return cb(null, newUser);
+  } catch (error) {
+    return cb(error);
+  }
+};
+
+export const postFacebookLogIn = (req, res) => {
+  res.redirect(routes.home);
+};
+
+export const instagramLogin = passport.authenticate('instagram');
+
+export const instagramLoginCallback = async (_, __, profile, cb) => {
+  // accessToken, refreshToken is not used so use _ and __
+  // console.log(accessToken, refreshToken, profile, cb);
+  console.log(profile, cb);
+  // const {
+  //   _json: { id, name, email },
+  // } = profile;
+  // // const { value: avatarUrl } = profile.photos[0];
+  // const avatarUrl = `https://graph.facebook.com/${id}/picture?type=large`;
+  // try {
+  //   let modifiedEmail = email;
+  //   if (!modifiedEmail) {
+  //     modifiedEmail = `${name}@test.com`;
+  //   }
+  //   const user = await userService.getUser(modifiedEmail);
+  //   if (user) {
+  //     // the email is already saved or used as our account
+  //     user.facebookId = id;
+  //     user.avatarUrl = avatarUrl;
+  //     user.save();
+  //     return cb(null, user);
+  //   }
+  //   // instagram user is not saved in db yet
+  //   const newUser = await userService.createUser({
+  //     email: modifiedEmail,
+  //     name,
+  //     facebookId: id,
+  //     avatarUrl,
+  //   });
+  //   return cb(null, newUser);
+  // } catch (error) {
+  //   return cb(error);
+  // }
+};
+
+export const postInstagramLogIn = (req, res) => {
+  res.redirect(routes.home);
+};
+
 export const logout = (req, res) => {
   req.flash('info', 'Logged out, see you later');
   req.logout();
@@ -74,7 +156,17 @@ export const getMe = (req, res) => {
   res.render('userDetail', { pageTitle: 'User Detail', user: req.user });
 };
 
-export const userDetail = (req, res) => res.render('userDetail', { pageTitle: 'User Detail' });
+export const userDetail = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const user = await userService.getUserById(id);
+    res.render('userDetail', { pageTitle: 'User Detail', user });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
 export const editProfile = (req, res) => res.render('editProfile', { pageTitle: 'Edit Profile' });
 export const changePassword = (req, res) =>
   res.render('changePassword', { pageTitle: 'Change Password' });
