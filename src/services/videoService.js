@@ -20,15 +20,9 @@ export const getVideoByTerm = async searchingBy => {
   }
 };
 
-export const saveVideo = async (video, file) => {
-  const { title, description } = video;
-  const { path } = file;
+export const saveVideo = video => {
   try {
-    return await Video.create({
-      fileUrl: path,
-      title,
-      description,
-    });
+    return Video.create(video);
   } catch (err) {
     throw new AppError(404, 'Not found');
   }
@@ -36,6 +30,10 @@ export const saveVideo = async (video, file) => {
 
 export const findVideoById = _id => {
   return Video.findById(_id);
+};
+
+export const findVideoByIdWithPopulate = (_id, key) => {
+  return Video.findById(_id).populate(key);
 };
 
 export const editVideoById = (_id, { title, description }) => {

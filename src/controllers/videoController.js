@@ -6,6 +6,7 @@ import routes from '../routes';
 export const home = async (req, res) => {
   try {
     const videos = await videoService.getVideos();
+    console.log('home-videos:', videos);
     res.render('home', { pageTitle: 'Home', videos });
   } catch {
     res.render('home', { pageTitle: 'Home', videos: [] });
@@ -21,14 +22,22 @@ export const search = tryCatch(async (req, res) => {
 export const getUpload = (req, res) => res.render('upload', { pageTitle: 'Upload' });
 
 export const postUpload = tryCatch(async (req, res) => {
-  const video = await videoService.saveVideo(req.body, req.file);
-  // To Do: Upload and save video
-  res.redirect(routes.videoDetail(video._id));
+  const video = {
+    title: req.body.title,
+    description: req.body.description,
+    fileUrl: req.file.path,
+    creator: req.user.id,
+  };
+  const newVideo = await videoService.saveVideo(video);
+  req.user.videos.push(newVideo.id);
+  req.user.save();
+  res.redirect(routes.videoDetail(newVideo._id));
 });
 
 export const videoDetail = async (req, res) => {
   try {
-    const video = await videoService.findVideoById(req.params.id);
+    const video = await videoService.findVideoByIdWithPopulate(req.params.id, 'creator');
+    console.log('videoDetail-video:', video);
     res.render('videoDetail', { pageTitle: video.title, video });
   } catch (error) {
     console.log(error);
@@ -39,7 +48,11 @@ export const videoDetail = async (req, res) => {
 export const getEditVideo = async (req, res) => {
   try {
     const video = await videoService.findVideoById(req.params.id);
-    res.render('editVideo', { pageTitle: `Edit ${video.title}`, video });
+    if (video.creator !== req.user.id) {
+      throw Error();
+    } else {
+      res.render('editVideo', { pageTitle: `Edit ${video.title}`, video });
+    }
   } catch (error) {
     console.log("The id doesn't exit");
     res.redirect(routes.home);
@@ -56,10 +69,18 @@ export const postEditVideo = async (req, res) => {
 };
 
 export const deleteVideo = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
   try {
-    await videoService.removeVideoById(req.params.id);
+    const video = await videoService.findVideoById(id);
+    if (video.creator !== req.user.id) {
+      throw Error();
+    } else {
+      await videoService.removeVideoById(id);
+    }
   } catch (error) {
     console.log(`The video of ${req.params.id} does't exist.`);
   }
-  res.redirect(routes.home); // 실패하던 성공하던 redirect to home
+  res.redirect(routes.home);
 };

@@ -28,4 +28,6 @@ export const getUser = email => {
 
 export const getUserById = id => User.findById(id);
 
+export const getUserByIdWithPopulate = (id, key) => User.findById(id).populate(key);
+
 export const getUpdateUserById = (id, user) => User.findByIdAndUpdate(id, user);
