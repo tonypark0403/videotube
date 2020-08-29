@@ -4,7 +4,6 @@ const JOIN = '/join';
 const LOGIN = '/login';
 const LOGOUT = '/logout';
 const SEARCH = '/search';
-const API = '/api';
 
 // Users
 
@@ -37,13 +36,17 @@ const FB_CALLBACK = '/auth/facebook/callback';
 const INSTA = '/auth/instagram';
 const INSTA_CALLBACK = '/auth/instagram/callback';
 
+// API
+
+const API = '/api';
+const REGISTER_VIEW = '/:id/view';
+
 const routes = {
   home: HOME,
   join: JOIN,
   login: LOGIN,
   logout: LOGOUT,
   search: SEARCH,
-  api: API,
   users: USERS,
   userDetail: id => {
     if (id) {
@@ -80,6 +83,8 @@ const routes = {
   facebookCallback: FB_CALLBACK,
   instagram: INSTA,
   instagramCallback: INSTA_CALLBACK,
+  api: API,
+  registerView: REGISTER_VIEW,
 };
 
 export default routes;

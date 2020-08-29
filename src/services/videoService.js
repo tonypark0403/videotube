@@ -11,6 +11,15 @@ export const getVideos = async () => {
   }
 };
 
+export const getVideoById = async id => {
+  try {
+    return await Video.findById(id);
+  } catch (err) {
+    console.log(err);
+    throw new AppError(403, 'Not found!');
+  }
+};
+
 export const getVideoByTerm = async searchingBy => {
   try {
     return await Video.find({ title: { $regex: searchingBy, $options: 'i' } });
@@ -26,6 +35,12 @@ export const saveVideo = video => {
   } catch (err) {
     throw new AppError(404, 'Not found');
   }
+};
+
+export const updateVideo = async videoModel => {
+  // eslint-disable-next-line no-param-reassign
+  videoModel.views += 1;
+  await videoModel.save();
 };
 
 export const findVideoById = _id => {
