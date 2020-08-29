@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import AppError from '../shared/AppError';
 import Video from '../models/video';
+import Comment from '../models/comment';
 
 export const getVideos = async () => {
   try {
@@ -43,12 +44,21 @@ export const updateVideo = async videoModel => {
   await videoModel.save();
 };
 
+export const updateVideoWithComment = async (user, videoModel, comment) => {
+  const newComment = await Comment.create({
+    text: comment,
+    creator: user.id,
+  });
+  videoModel.comments.push(newComment.id);
+  await videoModel.save();
+};
+
 export const findVideoById = _id => {
   return Video.findById(_id);
 };
 
-export const findVideoByIdWithPopulate = (_id, key) => {
-  return Video.findById(_id).populate(key);
+export const findVideoByIdWithPopulate = (_id, ...key) => {
+  return Video.findById(_id).populate(key[0]).populate(key[1]);
 };
 
 export const editVideoById = (_id, { title, description }) => {

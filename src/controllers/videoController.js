@@ -36,7 +36,11 @@ export const postUpload = tryCatch(async (req, res) => {
 
 export const videoDetail = async (req, res) => {
   try {
-    const video = await videoService.findVideoByIdWithPopulate(req.params.id, 'creator');
+    const video = await videoService.findVideoByIdWithPopulate(
+      req.params.id,
+      'creator',
+      'comments',
+    );
     console.log('videoDetail-video:', video);
     res.render('videoDetail', { pageTitle: video.title, video });
   } catch (error) {
@@ -91,9 +95,26 @@ export const postRegisterView = async (req, res) => {
     params: { id },
   } = req;
   try {
-    const video = videoService.getVideoById(id);
-    videoService.updateVideo(video);
+    const video = await videoService.getVideoById(id);
+    await videoService.updateVideo(video);
     res.status(200);
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+// Add Comment
+export const postAddComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { comment },
+    user,
+  } = req;
+  try {
+    const video = await videoService.getVideoById(id);
+    await videoService.updateVideoWithComment(user, video, comment);
   } catch (error) {
     res.status(400);
   } finally {
