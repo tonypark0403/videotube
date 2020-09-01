@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node ./src",
+    "start": "node build",
     "dev": "nodemon --exec babel-node ./src --ignore '.scss' --ignore 'static'",
-    "dev:assets": "webpack --mode development -w",
-    "build:assets": "webpack --mode production",
+    "dev:assets": "cd src && webpack --mode development -w",
+    "build:assets": "cd src && webpack --mode production",
+    "build:server": "babel src --out-dir build --ignore 'src/assets','src/static','src/webpack.config.js'",
+    "prebuild": "rm -rf build",
+    "copyAll": "cp -R src/static build && cp -R src/views build",
+    "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "start:dev": "concurrently \"yarn dev\" \"yarn --cwd frontend start\"",
     "tunnel": "lt --port 4000",
     "lint": "eslint ./src/**/*.js",
@@ -36,6 +40,7 @@
   },
   "homepage": "https://github.com/tonypark0403/videotube#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.11.5",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.23.0",
@@ -60,6 +65,7 @@
     "pug": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.11.5",
     "@babel/core": "^7.10.4",
     "@babel/node": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
