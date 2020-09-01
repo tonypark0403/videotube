@@ -6,7 +6,6 @@ const multerAvatar = multer({ dest: 'uploads/avatars/' });
 
 export const uploadVideo = multerVideo.single('videoFile');
 export const uploadAvatar = multerAvatar.single('avatar');
-
 // eslint-disable-next-line import/prefer-default-export
 export const localsMiddleware = (req, res, next) => {
   res.locals.siteName = 'YouTube';

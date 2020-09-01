@@ -1,12 +1,15 @@
 /* eslint-disable no-underscore-dangle */
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 import * as videoService from '../services/videoService';
 import tryCatch from '../shared/tryCatch';
 import routes from '../routes';
+import AppError from '../shared/AppError';
 
 export const home = async (req, res) => {
   try {
     const videos = await videoService.getVideos();
-    console.log('home-videos:', videos);
+    // console.log('home-videos:', videos);
     res.render('home', { pageTitle: 'Home', videos });
   } catch {
     res.render('home', { pageTitle: 'Home', videos: [] });
@@ -28,10 +31,20 @@ export const postUpload = tryCatch(async (req, res) => {
     fileUrl: req.file.path,
     creator: req.user.id,
   };
-  const newVideo = await videoService.saveVideo(video);
-  req.user.videos.push(newVideo.id);
-  req.user.save();
-  res.redirect(routes.videoDetail(newVideo._id));
+  await cloudinary.uploader.upload_large(video.fileUrl, async (error, result) => {
+    // console.log('cloudinary:', result);
+    const { fileUrl } = video;
+    video.fileUrl = result.url;
+    const newVideo = await videoService.saveVideo(video);
+    req.user.videos.push(newVideo.id);
+    req.user.save();
+    res.redirect(routes.videoDetail(newVideo._id));
+    try {
+      fs.unlinkSync(fileUrl);
+    } catch (err) {
+      AppError(err);
+    }
+  });
 });
 
 export const videoDetail = async (req, res) => {
@@ -41,10 +54,10 @@ export const videoDetail = async (req, res) => {
       'creator',
       'comments',
     );
-    console.log('videoDetail-video:', video);
+    // console.log('videoDetail-video:', video);
     res.render('videoDetail', { pageTitle: video.title, video });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.redirect(routes.home);
   }
 };
@@ -52,13 +65,13 @@ export const videoDetail = async (req, res) => {
 export const getEditVideo = async (req, res) => {
   try {
     const video = await videoService.findVideoById(req.params.id);
-    if (video.creator !== req.user.id) {
+    if (String(video.creator) !== req.user.id) {
       throw Error();
     } else {
       res.render('editVideo', { pageTitle: `Edit ${video.title}`, video });
     }
   } catch (error) {
-    console.log("The id doesn't exit");
+    // console.log("The id doesn't exit");
     res.redirect(routes.home);
   }
 };
@@ -78,10 +91,20 @@ export const deleteVideo = async (req, res) => {
   } = req;
   try {
     const video = await videoService.findVideoById(id);
-    if (video.creator !== req.user.id) {
+    if (String(video.creator) !== req.user.id) {
       throw Error();
     } else {
-      await videoService.removeVideoById(id);
+      const fileData = video.fileUrl.split('/');
+      const fileId = fileData[fileData.length - 1];
+      // console.log('fileId:', fileId);
+      await cloudinary.uploader.destroy(
+        `${fileId}`,
+        { resource_type: 'raw' },
+        async (error, result) => {
+          console.log('cloudiary', result, error);
+          await videoService.removeVideoById(id);
+        },
+      ); // due to no extension, not use video but raw
     }
   } catch (error) {
     console.log(`The video of ${req.params.id} does't exist.`);
