@@ -26,6 +26,8 @@ export const getUser = email => {
   return User.findOne({ email });
 };
 
+export const getUserByEmailWithPopulate = (email, key) => User.findOne({ email }).populate(key);
+
 export const getUserById = id => User.findById(id);
 
 export const getUserByIdWithPopulate = (id, key) => User.findById(id).populate(key);
