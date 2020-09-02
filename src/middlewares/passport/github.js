@@ -1,6 +1,8 @@
+/* eslint-disable import/no-cycle */
 import GithubStrategy from 'passport-github';
 import * as userController from '../../controllers/userController';
 import routes from '../../routes';
+import { SERVER } from '.';
 
 const { GH_ID, GH_SECRET } = process.env;
 
@@ -9,7 +11,7 @@ export default () =>
     {
       clientID: GH_ID,
       clientSecret: GH_SECRET,
-      callbackURL: `http://localhost:4000${routes.githubCallback}`,
+      callbackURL: `${SERVER}${routes.githubCallback}`,
     },
     userController.githubLoginCallback,
   );
