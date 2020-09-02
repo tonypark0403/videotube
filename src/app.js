@@ -15,7 +15,7 @@ const app = express();
 // middlewares
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-// app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static(path.join(__dirname, 'static')));
 middlewares(app);
 
