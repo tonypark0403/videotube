@@ -6,13 +6,20 @@ export const getJoin = (req, res) => {
   res.render('join', { pageTitle: 'Join' });
 };
 export const postJoin = async (req, res, next) => {
+  const { password, password2 } = req.body;
   try {
-    const user = await userService.processSignUp(req.body);
-    if (!user) {
+    if (password !== password2) {
+      req.flash('error', "Passwords don't match");
       res.status(400);
       res.render('join', { pageTitle: 'Join' });
     } else {
-      next();
+      const user = await userService.processSignUp(req.body);
+      if (!user) {
+        res.status(400);
+        res.render('join', { pageTitle: 'Join' });
+      } else {
+        next();
+      }
     }
   } catch (err) {
     res.redirect(routes.home);
@@ -26,7 +33,10 @@ export const postLogin = passport.authenticate('local', {
   failureFlash: "Can't log in. Check email and/or password",
 });
 
-export const githubLogin = passport.authenticate('github');
+export const githubLogin = passport.authenticate('github', {
+  successFlash: 'Welcome',
+  failureFlash: "Can't log in. Check email and/or password",
+});
 
 export const githubLoginCallback = async (_, __, profile, cb) => {
   // accessToken, refreshToken is not used so use _ and __
@@ -64,7 +74,10 @@ export const postGithubLogIn = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const facebookLogin = passport.authenticate('facebook');
+export const facebookLogin = passport.authenticate('facebook', {
+  successFlash: 'Welcome',
+  failureFlash: "Can't log in. Check email and/or password",
+});
 
 export const facebookLoginCallback = async (_, __, profile, cb) => {
   // accessToken, refreshToken is not used so use _ and __
@@ -105,7 +118,10 @@ export const postFacebookLogIn = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const instagramLogin = passport.authenticate('instagram');
+export const instagramLogin = passport.authenticate('instagram', {
+  successFlash: 'Welcome',
+  failureFlash: "Can't log in. Check email and/or password",
+});
 
 export const instagramLoginCallback = async (_, __, profile, cb) => {
   // accessToken, refreshToken is not used so use _ and __
@@ -166,6 +182,7 @@ export const userDetail = async (req, res) => {
     // console.log('userDetail-user:', user);
     res.render('userDetail', { pageTitle: 'User Detail', user });
   } catch (error) {
+    req.flash('error', 'User not found');
     res.redirect(routes.home);
   }
 };
@@ -183,8 +200,10 @@ export const postEditProfile = async (req, res) => {
       email,
       avatarUrl: file ? file.path : req.user.avatarUrl,
     });
+    req.flash('success', 'Profile updated');
     res.redirect(routes.me);
   } catch (error) {
+    req.flash('error', "Can't update profile");
     res.redirect(routes.editProfile);
   }
 };
@@ -198,6 +217,7 @@ export const postChangePassword = async (req, res) => {
   } = req;
   try {
     if (newPassword !== newPassword1) {
+      req.flash('error', "Passwords don't match");
       res.status(400);
       res.redirect(`/users/${routes.changePassword}`);
       return;
@@ -205,6 +225,7 @@ export const postChangePassword = async (req, res) => {
     await req.user.changePassword(oldPassword, newPassword);
     res.redirect(routes.me);
   } catch (error) {
+    req.flash('error', "Can't change password");
     res.status(400);
     res.redirect(`/users/${routes.changePassword}`);
   }

@@ -1,11 +1,7 @@
 import User from '../models/user';
 
 /* eslint-disable import/prefer-default-export */
-export const processSignUp = async ({ name, email, password, password2 }) => {
-  // eslint-disable-next-line no-unused-vars
-  if (password !== password2) {
-    return null;
-  }
+export const processSignUp = async ({ name, email, password }) => {
   try {
     const user = await User({
       name,

@@ -7,6 +7,7 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import mongoStore from 'connect-mongo';
 import flash from 'connect-flash';
+import expressFlash from 'express-flash';
 import cloudinaryConfig from './cloudinary';
 import { localsMiddleware } from './localsMiddleware';
 
@@ -29,6 +30,7 @@ export default app => {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(flash());
+  app.use(expressFlash());
   app.use(localsMiddleware);
   app.use(cloudinaryConfig);
 };
